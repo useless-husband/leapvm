@@ -1,0 +1,15 @@
+#!/bin/busybox sh
+# LeapVM 虛擬機裡的第一支程式（PID 1）
+/bin/busybox mkdir -p /proc /sys /dev /tmp /sbin /usr/bin /usr/sbin /root
+/bin/busybox --install -s
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+hostname leapvm
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin HOME=/root PS1='leapvm:\w# '
+echo
+echo "  LeapVM — 從零打造的 Mac 虛擬機"
+echo "  Linux $(uname -r) on $(uname -m)，開機花了 $(cut -d' ' -f1 /proc/uptime) 秒"
+echo
+cd /root
+exec setsid sh -c 'exec sh </dev/ttyAMA0 >/dev/ttyAMA0 2>&1'

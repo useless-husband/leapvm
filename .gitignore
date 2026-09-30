@@ -1,0 +1,24 @@
+# 編譯產物
+leapvm
+leapvm.dSYM/
+bench/bench.mac
+bench/*.linux
+bench/*.o
+guest/extra/
+guest/initramfs.cpio
+guest/demo/*.o
+
+# 從 Alpine 官方站下載的 Linux（make 會自動抓）
+guest/Image
+guest/vmlinuz-virt
+guest/*.apk
+guest/*.part
+guest/bin/
+guest/alpine/
+
+# 安裝好的系統（tools/install_alpine.py 產生，很大）
+guest/disk.img
+guest/installed/
+
+.DS_Store
+__pycache__/

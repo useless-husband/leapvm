@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# GitHub 的 macOS 執行器本身是虛擬機，裡面不能再開虛擬機，所以這裡只做編譯與語法檢查；
+# 真正的開機、桌面、壓力測試要在實體 Mac 上跑 tests/run_all.sh
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install libslirp
+        run: brew install libslirp
+      - name: Build LeapVM
+        run: make leapvm
+      - name: Build benchmark (macOS + Linux targets)
+        run: make -C bench all
+      - name: Usage text
+        run: ./leapvm 2>&1 | grep -q "用法"
+      - name: Python syntax
+        run: python3 -m py_compile tools/*.py tests/*.py stress/*.py guest/mkinitramfs.py bench/mkelf.py
